@@ -3,7 +3,7 @@ SHELL := /bin/bash
 .SHELLFLAGS := -eu -o pipefail -c
 .DEFAULT_GOAL := help
 USER := yabuki
-TARGETMACHINE := odayla.local
+TARGET := odayla.local
 DEST := /misc/removable/Orlanth
 REMOTEDEST := yabuki@odayla.local::/misc/removable/Orlanth
 EXCLUDEFILE := ./Orlanth-exclude.list
@@ -15,8 +15,8 @@ EXCLUDEFILE := ./Orlanth-exclude.list
 #.PHONY: backup bk compare verify list
 
 backup: ## backup command
-	if [ $(ssh $UESR@$TARGETMACHINE "[ -d $DEST ];echo \$?") -eq 0 ]; then \
-	sudo /usr/bin/rdiff-backup \
+	if [ $$(ssh yabuki@odayla.local "[ -d /misc/removable/Orlanth ];echo \$$?") -eq 0 ]; then \
+	/usr/bin/rdiff-backup \
 	--print-statistics \
 	--exclude-globbing-filelist '$(EXCLUDEFILE)' \
 	/home/ \
@@ -26,7 +26,7 @@ backup: ## backup command
 	fi
 
 bk: ## force backup
-	if [ $(ssh $UESR@$TARGETMACHINE "[ -d $DEST ];echo \$?") -eq 0 ]; then \
+	if [ $(ssh $UESR@$TARGET "[ -d $DEST ];echo \$?") -eq 0 ]; then \
 	sudo /usr/bin/rdiff-backup \
 	-b \
 	--print-statistics \
@@ -38,7 +38,7 @@ bk: ## force backup
 	fi
 
 compare: ## compare now
-	if [ $(ssh $UESR@$TARGETMACHINE "[ -d $DEST ];echo \$?") -eq 0 ]; then \
+	if [ $(ssh $UESR@$TARGET "[ -d $DEST ];echo \$?") -eq 0 ]; then \
 	sudo /usr/bin/rdiff-backup \
 	--compare \
 	--exclude-globbing-filelist '$(EXCLUDEFILE)' \
@@ -47,7 +47,7 @@ compare: ## compare now
 	fi
 
 verify: ## verify backup
-	if [ $(ssh $UESR@$TARGETMACHINE "[ -d $DEST ];echo \$?") -eq 0 ]; then \
+	if [ $(ssh $UESR@$TARGET "[ -d $DEST ];echo \$?") -eq 0 ]; then \
 	sudo /usr/bin/rdiff-backup \
 	--verify \
 	--exclude-globbing-filelist '$(EXCLUDEFILE)' \
@@ -55,7 +55,7 @@ verify: ## verify backup
 	fi
 
 list: ## get list of backups
-	if [ $(ssh $UESR@$TARGETMACHINE "[ -d $DEST ];echo \$?") -eq 0 ]; then \
+	if [ $(ssh $UESR@$TARGET "[ -d $DEST ];echo \$?") -eq 0 ]; then \
 	sudo /usr/bin/rdiff-backup \
 	-l \
 	--exclude-globbing-filelist '$(EXCLUDEFILE)' \
@@ -63,7 +63,7 @@ list: ## get list of backups
 	fi
 
 remove-older-than: ## remove old backup sets
-	if [ $(ssh $UESR@$TARGETMACHINE "[ -d $DEST ];echo \$?") -eq 0 ]; then \
+	if [ $(ssh $UESR@$TARGET "[ -d $DEST ];echo \$?") -eq 0 ]; then \
 	sudo /usr/bin/rdiff-backup \
 	--force \
 	--remove-older-than 1M \
