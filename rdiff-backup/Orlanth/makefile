@@ -7,8 +7,8 @@ TARGET := odayla.local
 EXECMACHINE := Orlanth
 DEST := /misc/removable/Orlanth
 REMOTEDEST := yabuki@odayla.local::/misc/removable/Orlanth
-#EXCLUDEFILE := ./Orlanth-exclude.list
-EXCLUDEFILE := /home/yabuki/scm/git/my-local-tools/rdiff-backup/Orlanth/Orlanth-exclude.list
+EXCLUDEFILE := ./Orlanth-exclude.list
+#EXCLUDEFILE := /home/yabuki/scm/git/my-local-tools/rdiff-backup/Orlanth/Orlanth-exclude.list
 
 # all targets are phony
 .PHONY: $(shell egrep -o ^[a-zA-Z_-]+: $(MAKEFILE_LIST) | sed 's/://')
