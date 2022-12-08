@@ -2,10 +2,25 @@
 
 ## rdiff-backup
 
-- backup script
+### このツールは何か
 
-- 気をつける点
-    - パーミッション
+各マシンから、OdaylaにつないであるHDDに/home/の内容を
+rdiff-backupでバックアップを取るスクリプトです。
+
+### 使い方
+
+rdiff-backupディレクトリの各マシンのディレクトリに行き
+
+`make`でできることを確認した、あとにバックアップを実行する。
+
+### 初期の手順
+
+1. mkfsします。ext4かbtrfsあたりか。
+2. automountしているので、設定します。UUIDがよい?
+3. /misc/removableのしたに、マシン名ごとにディレクトリー
+    を切ります。sudo chown yabuki:yabuki ディレクトリ名
+    として、一般ユーザが書けるようにしておきます。
+
     ```
      pwd
     /misc/removable/Orlanth/home
@@ -16,7 +31,13 @@
     drwx------  4 yabuki yabuki 4096 12月  8 14:47 rdiff-backup-data
     drwxr-xr-x 52 yabuki yabuki 4096 12月  8 14:05 yabuki
     ```
-    としておくこと。
+    こんな感じ。
+
+### note
+
+rootの権限をもったものは対象としない。ssh root@マシン名 でsshアクセスを許さないと
+いけないので、それはちょっとね。
+
 
 - 実行コマンドラインと結果
 
