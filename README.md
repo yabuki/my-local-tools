@@ -22,9 +22,9 @@ rdiff-backupディレクトリの各マシンのディレクトリに行き
     として、一般ユーザが書けるようにしておきます。
 
     ```
-     pwd
+    $ pwd
     /misc/removable/Orlanth/home
-      Odayla  yabuki  …  removable  Orlanth  home  ls -la
+    $ ls -la
     合計 16
     drwxr-xr-x  4 yabuki yabuki 4096  3月 22  2021 .
     drwxrwxr-x  3 yabuki yabuki 4096 12月  2 23:46 ..
@@ -41,7 +41,7 @@ rootの権限をもったものは対象としない。ssh root@マシン名 で
 
 - 実行コマンドラインと結果
 
-```
+    ```
      make -f Orlanth.mk backup
     if [ $(ssh yabuki@odayla.local "[ -d /misc/removable/Orlanth ];echo \$?") -eq 0 ]; then \
     /usr/bin/rdiff-backup \
@@ -75,3 +75,4 @@ rootの権限をもったものは対象としない。ssh root@マシン名 で
     Errors 0
     --------------------------------------------------
     ```
+
