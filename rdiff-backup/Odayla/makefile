@@ -4,6 +4,7 @@ SHELL := /bin/bash
 .DEFAULT_GOAL := help
 DEST := /misc/removable/Odayla
 EXCLUDEFILE := ./Odayla-exclude.list
+EXECMACHINE := Odayla
 
 # all targets are phony
 .PHONY: $(shell egrep -o ^[a-zA-Z_-]+: $(MAKEFILE_LIST) | sed 's/://')
@@ -12,6 +13,7 @@ EXCLUDEFILE := ./Odayla-exclude.list
 #.PHONY: backup bk compare verify list
 
 backup: ## backup command
+	if [ `hostname` == $(EXECMACHINE) ]; then \
 	if [ -d '$(DEST)' ]; then \
 	/usr/bin/rdiff-backup \
 	--print-statistics \
@@ -20,9 +22,13 @@ backup: ## backup command
 	$(DEST)/home/ ; \
 	else \
 	echo "I couldn't get $(DEST)" | mail -s "Is $(DEST) active?" yabuki ; \
+	fi \
+	else \
+	echo "Are you be in $(EXECMACHINE)?"; \
 	fi
 
 bk: ## force backup
+	if [ `hostname` == $(EXECMACHINE) ]; then \
 	if [ -d '$(DEST)' ]; then \
 	/usr/bin/rdiff-backup \
 	-b \
@@ -32,34 +38,50 @@ bk: ## force backup
 	$(DEST)/home/ ; \
 	else \
 	echo "I couldn't get $(DEST)" | mail -s "Is $(DEST) active?" yabuki ; \
+	fi \
+	else \
+	echo "Are you be in $(EXECMACHINE)?"; \
 	fi
 
 compare: ## compare now
+	if [ `hostname` == $(EXECMACHINE) ]; then \
 	if [ -d '$(DEST)' ]; then \
 	/usr/bin/rdiff-backup \
 	--compare \
 	--exclude-globbing-filelist '$(EXCLUDEFILE)' \
 	/home/ \
 	$(DEST)/home/ ; \
+	fi \
+	else \
+	echo "Are you be in $(EXECMACHINE)?"; \
 	fi
 
 verify: ## verify backup
+	if [ `hostname` == $(EXECMACHINE) ]; then \
 	if [ -d '$(DEST)' ]; then \
 	/usr/bin/rdiff-backup \
 	--verify \
 	--exclude-globbing-filelist '$(EXCLUDEFILE)' \
 	$(DEST)/home/ ; \
+	fi \
+	else \
+	echo "Are you be in $(EXECMACHINE)?"; \
 	fi
 
 list: ## get list of backups
+	if [ `hostname` == $(EXECMACHINE) ]; then \
 	if [ -d '$(DEST)' ]; then \
 	/usr/bin/rdiff-backup \
 	-l \
 	--exclude-globbing-filelist '$(EXCLUDEFILE)' \
 	$(DEST)/home/ ; \
+	fi \
+	else \
+	echo "Are you be in $(EXECMACHINE)?"; \
 	fi
 
 remove-older-than: ## remove old backup sets
+	if [ `hostname` == $(EXECMACHINE) ]; then \
 	if [ -d '$(DEST)' ]; then \
 	/usr/bin/rdiff-backup \
 	--force \
@@ -67,6 +89,9 @@ remove-older-than: ## remove old backup sets
 	--print-statistics \
 	--exclude-globbing-filelist '$(EXCLUDEFILE)' \
 	$(DEST)/home/ ; \
+	fi \
+	else \
+	echo "Are you be in $(EXECMACHINE)?"; \
 	fi
 
 help: ## Print this help
