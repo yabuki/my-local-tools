@@ -2,13 +2,11 @@
 - /home/*/**.swp
 - /home/*/**.swo
 - /home/yabuki/.cache/
-- /home/yabuki/.config/google-chrome/Default/
 - /home/yabuki/scm/git/webdino/reporter/db_data/
+- /home/yabuki/scm/git/webdino/reporter/db_data/*
 - /home/yabuki/.config/chromium/Profile 1/IndexedDB/
-- /home/yabuki/.config/google-chrome/Default/Sessions/
-- /home/yabuki/.config/google-chrome/Default/Session Storage/
+- /home/yabuki/.config/google-chrome/Default/*
 - /home/yabuki/.xsession-errors
 - /home/yabuki/.xsession-errors.old
-- /home/yabuki/.config/0ad/logs/
-- /home/yabuki/.local/share/0ad/replays/
-- /home/yabuki/scm/git/webdino/reporter/db_data/
+- /home/yabuki/.config/0ad/logs/*
+- /home/yabuki/.local/share/0ad/replays/*
