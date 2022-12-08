@@ -2,6 +2,8 @@
 - /home/*/**.swp
 - /home/*/**.swo
 - /home/yabuki/.cache/
+- /home/yabuki/.config/google-chrome/Default/
+- /home/yabuki/scm/git/webdino/reporter/db_data/
 - /home/yabuki/.config/chromium/Profile 1/IndexedDB/
 - /home/yabuki/.config/google-chrome/Default/Sessions/
 - /home/yabuki/.config/google-chrome/Default/Session Storage/
