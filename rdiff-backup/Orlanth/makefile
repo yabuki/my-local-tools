@@ -16,19 +16,18 @@ EXCLUDEFILE := /home/yabuki/scm/git/my-local-tools/rdiff-backup/Orlanth/Orlanth-
 #.PHONY: backup bk compare verify list
 
 backup: ## backup command
-	if [ $$(ssh yabuki@odayla.local "[ -d /misc/removable/Orlanth ];echo \$$?") -eq 0 ]; then \
+	if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
 	/usr/bin/rdiff-backup \
-	--force \
 	--print-statistics \
 	--exclude-globbing-filelist '$(EXCLUDEFILE)' \
 	/home/ \
 	$(REMOTEDEST)/home/ ; \
 	else \
-	echo "I couldn't get $(DEST)" | mail -s "Is $(DEST) active?" yabuki ; \
+	echo "I couldn't get $(REMOTEDEST)" | mail -s "Is $(REMOTEDEST) active?" yabuki ; \
 	fi
 
 bk: ## force backup
-	if [ $(ssh $UESR@$TARGET "[ -d $DEST ];echo \$?") -eq 0 ]; then \
+	if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
 	sudo /usr/bin/rdiff-backup \
 	-b \
 	--print-statistics \
@@ -36,11 +35,11 @@ bk: ## force backup
 	/home/ \
 	$(REMOTEDEST)/home/ ; \
 	else \
-	echo "I couldn't get $(DEST)" | mail -s "Is $(DEST) active?" yabuki ; \
+	echo "I couldn't get $(REMOTEDEST)" | mail -s "Is $(REMOTEDEST) active?" yabuki ; \
 	fi
 
 compare: ## compare now
-	if [ $(ssh $UESR@$TARGET "[ -d $DEST ];echo \$?") -eq 0 ]; then \
+	if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
 	sudo /usr/bin/rdiff-backup \
 	--compare \
 	--exclude-globbing-filelist '$(EXCLUDEFILE)' \
@@ -49,7 +48,7 @@ compare: ## compare now
 	fi
 
 verify: ## verify backup
-	if [ $(ssh $UESR@$TARGET "[ -d $DEST ];echo \$?") -eq 0 ]; then \
+	if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
 	sudo /usr/bin/rdiff-backup \
 	--verify \
 	--exclude-globbing-filelist '$(EXCLUDEFILE)' \
@@ -57,7 +56,7 @@ verify: ## verify backup
 	fi
 
 list: ## get list of backups
-	if [ $(ssh $UESR@$TARGET "[ -d $DEST ];echo \$?") -eq 0 ]; then \
+	if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
 	sudo /usr/bin/rdiff-backup \
 	-l \
 	--exclude-globbing-filelist '$(EXCLUDEFILE)' \
@@ -65,7 +64,7 @@ list: ## get list of backups
 	fi
 
 remove-older-than: ## remove old backup sets
-	if [ $(ssh $UESR@$TARGET "[ -d $DEST ];echo \$?") -eq 0 ]; then \
+	if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
 	sudo /usr/bin/rdiff-backup \
 	--force \
 	--remove-older-than 1M \
@@ -75,7 +74,7 @@ remove-older-than: ## remove old backup sets
 	fi
 
 help: ## Print this help
-	@echo 'Usage: make -f Odayla.mk [target]'
+	@echo 'Usage: make  [target]'
 	@echo ''
 	@echo 'Targets:'
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
