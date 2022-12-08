@@ -6,7 +6,8 @@ USER := yabuki
 TARGET := odayla.local
 DEST := /misc/removable/Orlanth
 REMOTEDEST := yabuki@odayla.local::/misc/removable/Orlanth
-EXCLUDEFILE := ./Orlanth-exclude.list
+#EXCLUDEFILE := ./Orlanth-exclude.list
+EXCLUDEFILE := /home/yabuki/scm/git/my-local-tools/rdiff-backup/Orlanth/Orlanth-exclude.list
 
 # all targets are phony
 .PHONY: $(shell egrep -o ^[a-zA-Z_-]+: $(MAKEFILE_LIST) | sed 's/://')
@@ -17,6 +18,7 @@ EXCLUDEFILE := ./Orlanth-exclude.list
 backup: ## backup command
 	if [ $$(ssh yabuki@odayla.local "[ -d /misc/removable/Orlanth ];echo \$$?") -eq 0 ]; then \
 	/usr/bin/rdiff-backup \
+	--force \
 	--print-statistics \
 	--exclude-globbing-filelist '$(EXCLUDEFILE)' \
 	/home/ \
