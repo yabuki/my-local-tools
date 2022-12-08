@@ -34,7 +34,7 @@ backup: ## backup command
 bk: ## force backup
 	if [ `hostname` == $(EXECMACHINE) ]; then \
 	if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
-	sudo /usr/bin/rdiff-backup \
+	/usr/bin/rdiff-backup \
 	-b \
 	--print-statistics \
 	--exclude-globbing-filelist '$(EXCLUDEFILE)' \
@@ -50,7 +50,7 @@ bk: ## force backup
 compare: ## compare now
 	if [ `hostname` == $(EXECMACHINE) ]; then \
 	if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
-	sudo /usr/bin/rdiff-backup \
+	/usr/bin/rdiff-backup \
 	--compare \
 	--exclude-globbing-filelist '$(EXCLUDEFILE)' \
 	/home/ \
@@ -63,7 +63,7 @@ compare: ## compare now
 verify: ## verify backup
 	if [ `hostname` == $(EXECMACHINE) ]; then \
 	if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
-	sudo /usr/bin/rdiff-backup \
+	/usr/bin/rdiff-backup \
 	--verify \
 	--exclude-globbing-filelist '$(EXCLUDEFILE)' \
 	$(REMOTEDEST)/home/ ; \
@@ -75,7 +75,7 @@ verify: ## verify backup
 list: ## get list of backups
 	if [ `hostname` == $(EXECMACHINE) ]; then \
 	if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
-	sudo /usr/bin/rdiff-backup \
+	/usr/bin/rdiff-backup \
 	-l \
 	--exclude-globbing-filelist '$(EXCLUDEFILE)' \
 	$(REMOTEDEST)/home/ ; \
@@ -87,7 +87,7 @@ list: ## get list of backups
 remove-older-than: ## remove old backup sets
 	if [ `hostname` == $(EXECMACHINE) ]; then \
 	if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
-	sudo /usr/bin/rdiff-backup \
+	/usr/bin/rdiff-backup \
 	--force \
 	--remove-older-than 1M \
 	--print-statistics \
