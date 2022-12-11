@@ -13,7 +13,7 @@ EXECMACHINE := Odayla
 #.PHONY: backup bk compare verify list
 
 backup: ## backup command
-	if [ `hostname` == $(EXECMACHINE) ]; then \
+	@if [ `hostname` == $(EXECMACHINE) ]; then \
 	if [ -d '$(DEST)' ]; then \
 	/usr/bin/rdiff-backup \
 	--print-statistics \
@@ -28,7 +28,7 @@ backup: ## backup command
 	fi
 
 bk: ## force backup
-	if [ `hostname` == $(EXECMACHINE) ]; then \
+	@if [ `hostname` == $(EXECMACHINE) ]; then \
 	if [ -d '$(DEST)' ]; then \
 	/usr/bin/rdiff-backup \
 	-b \
@@ -44,7 +44,7 @@ bk: ## force backup
 	fi
 
 compare: ## compare now
-	if [ `hostname` == $(EXECMACHINE) ]; then \
+	@if [ `hostname` == $(EXECMACHINE) ]; then \
 	if [ -d '$(DEST)' ]; then \
 	/usr/bin/rdiff-backup \
 	--compare \
@@ -57,7 +57,7 @@ compare: ## compare now
 	fi
 
 verify: ## verify backup
-	if [ `hostname` == $(EXECMACHINE) ]; then \
+	@if [ `hostname` == $(EXECMACHINE) ]; then \
 	if [ -d '$(DEST)' ]; then \
 	/usr/bin/rdiff-backup \
 	--verify \
@@ -69,7 +69,7 @@ verify: ## verify backup
 	fi
 
 list: ## get list of backups
-	if [ `hostname` == $(EXECMACHINE) ]; then \
+	@if [ `hostname` == $(EXECMACHINE) ]; then \
 	if [ -d '$(DEST)' ]; then \
 	/usr/bin/rdiff-backup \
 	-l \
@@ -81,7 +81,7 @@ list: ## get list of backups
 	fi
 
 remove-older-than: ## remove old backup sets
-	if [ `hostname` == $(EXECMACHINE) ]; then \
+	@if [ `hostname` == $(EXECMACHINE) ]; then \
 	if [ -d '$(DEST)' ]; then \
 	/usr/bin/rdiff-backup \
 	--force \
