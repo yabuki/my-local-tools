@@ -1,6 +1,14 @@
 # my-local-tools
 
+
 ## rdiff-backup
+
+### ライセンス
+
+私が書いた部分は AGPL にします。書くというか自分で独自の
+表現をした部分というべきか。
+
+AGPLの詳細については、rdiff-backupディレクトリにあるCOPYINGを参照のこと。
 
 ### このツールは何か
 
