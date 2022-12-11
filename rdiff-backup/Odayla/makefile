@@ -14,84 +14,98 @@ EXECMACHINE := Odayla
 
 backup: ## backup command
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
-	if [ -d '$(DEST)' ]; then \
-	/usr/bin/rdiff-backup \
-	--print-statistics \
-	--exclude-globbing-filelist '$(EXCLUDEFILE)' \
-	/home/ \
-	$(DEST)/home/ ; \
+		if [ -d '$(DEST)' ]; then \
+			/usr/bin/rdiff-backup \
+			--print-statistics \
+			--exclude-globbing-filelist '$(EXCLUDEFILE)' \
+			/home/ \
+			$(DEST)/home/ ; \
+			echo "exit code \$$?" \
+		else \
+			echo "I couldn't get $(DEST)" | mail -s "Is $(DEST) active?" yabuki ; \
+		fi \
 	else \
-	echo "I couldn't get $(DEST)" | mail -s "Is $(DEST) active?" yabuki ; \
-	fi \
-	else \
-	echo "Are you be in $(EXECMACHINE)?"; \
+		echo "Are you be in $(EXECMACHINE)?"; \
 	fi
 
 bk: ## force backup
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
-	if [ -d '$(DEST)' ]; then \
-	/usr/bin/rdiff-backup \
-	-b \
-	--print-statistics \
-	--exclude-globbing-filelist '$(EXCLUDEFILE)' \
-	/home/ \
-	$(DEST)/home/ ; \
+		if [ -d '$(DEST)' ]; then \
+			/usr/bin/rdiff-backup \
+			-b \
+			--print-statistics \
+			--exclude-globbing-filelist '$(EXCLUDEFILE)' \
+			/home/ \
+			$(DEST)/home/ ; \
+			echo "exit code \$$?" \
+		else \
+			echo "I couldn't get $(DEST)" | mail -s "Is $(DEST) active?" yabuki ; \
+		fi \
 	else \
-	echo "I couldn't get $(DEST)" | mail -s "Is $(DEST) active?" yabuki ; \
-	fi \
-	else \
-	echo "Are you be in $(EXECMACHINE)?"; \
+		echo "Are you be in $(EXECMACHINE)?"; \
 	fi
 
 compare: ## compare now
-	@if [ `hostname` == $(EXECMACHINE) ]; then \
-	if [ -d '$(DEST)' ]; then \
-	/usr/bin/rdiff-backup \
-	--compare \
-	--exclude-globbing-filelist '$(EXCLUDEFILE)' \
-	/home/ \
-	$(DEST)/home/ ; \
-	fi \
+	if [ `hostname` == $(EXECMACHINE) ]; then \
+		if [ -d '$(DEST)' ]; then \
+			/usr/bin/rdiff-backup \
+			--compare \
+			--exclude-globbing-filelist '$(EXCLUDEFILE)' \
+			/home/ \
+			$(DEST)/home/ ; \
+			echo "exit code \$$?" \
+		else \
+			echo "I couldn't get $(DEST)" | mail -s "Is $(DEST) active?" yabuki ; \
+		fi \
 	else \
-	echo "Are you be in $(EXECMACHINE)?"; \
+		echo "Are you be in $(EXECMACHINE)?"; \
 	fi
 
 verify: ## verify backup
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
-	if [ -d '$(DEST)' ]; then \
-	/usr/bin/rdiff-backup \
-	--verify \
-	--exclude-globbing-filelist '$(EXCLUDEFILE)' \
-	$(DEST)/home/ ; \
-	fi \
+		if [ -d '$(DEST)' ]; then \
+			/usr/bin/rdiff-backup \
+			--verify \
+			--exclude-globbing-filelist '$(EXCLUDEFILE)' \
+			$(DEST)/home/ ; \
+			echo "exit code \$$?" \
+		else \
+			echo "I couldn't get $(DEST)" | mail -s "Is $(DEST) active?" yabuki ; \
+		fi \
 	else \
-	echo "Are you be in $(EXECMACHINE)?"; \
+		echo "Are you be in $(EXECMACHINE)?"; \
 	fi
 
 list: ## get list of backups
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
-	if [ -d '$(DEST)' ]; then \
-	/usr/bin/rdiff-backup \
-	-l \
-	--exclude-globbing-filelist '$(EXCLUDEFILE)' \
-	$(DEST)/home/ ; \
-	fi \
+		if [ -d '$(DEST)' ]; then \
+			/usr/bin/rdiff-backup \
+			-l \
+			--exclude-globbing-filelist '$(EXCLUDEFILE)' \
+			$(DEST)/home/ ; \
+			echo "exit code \$$?" \
+		else \
+			echo "I couldn't get $(DEST)" | mail -s "Is $(DEST) active?" yabuki ; \
+		fi \
 	else \
-	echo "Are you be in $(EXECMACHINE)?"; \
+		echo "Are you be in $(EXECMACHINE)?"; \
 	fi
 
 remove-older-than: ## remove old backup sets
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
-	if [ -d '$(DEST)' ]; then \
-	/usr/bin/rdiff-backup \
-	--force \
-	--remove-older-than 1M \
-	--print-statistics \
-	--exclude-globbing-filelist '$(EXCLUDEFILE)' \
-	$(DEST)/home/ ; \
-	fi \
+		if [ -d '$(DEST)' ]; then \
+			/usr/bin/rdiff-backup \
+			--force \
+			--remove-older-than 1M \
+			--print-statistics \
+			--exclude-globbing-filelist '$(EXCLUDEFILE)' \
+			$(DEST)/home/ ; \
+			echo "exit code \$$?" \
+		else \
+			echo "I couldn't get $(DEST)" | mail -s "Is $(DEST) active?" yabuki ; \
+		fi \
 	else \
-	echo "Are you be in $(EXECMACHINE)?"; \
+		echo "Are you be in $(EXECMACHINE)?"; \
 	fi
 
 help: ## Print this help
