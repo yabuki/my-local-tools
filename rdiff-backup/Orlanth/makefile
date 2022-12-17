@@ -28,7 +28,7 @@ backup: ## backup command
 			echo "I couldn't get $(REMOTEDEST)" | mail -s "Is $(REMOTEDEST) active?" yabuki ; \
 		fi \
 	else \
-		echo "Are you be in $(EXECMACHINE)?"; \
+		echo "Are you in $(EXECMACHINE)?"; \
 	fi
 
 bk: ## force backup
@@ -44,7 +44,7 @@ bk: ## force backup
 			echo "I couldn't get $(REMOTEDEST)" | mail -s "Is $(REMOTEDEST) active?" yabuki ; \
 		fi \
 	else \
-		echo "Are you be in $(EXECMACHINE)?"; \
+		echo "Are you in $(EXECMACHINE)?"; \
 	fi
 
 compare: ## compare now
@@ -60,7 +60,7 @@ compare: ## compare now
 			echo "I couldn't get $(REMOTEDEST)" | mail -s "Is $(REMOTEDEST) active?" yabuki ; \
 		fi \
 	else \
-		echo "Are you be in $(EXECMACHINE)?"; \
+		echo "Are you in $(EXECMACHINE)?"; \
 	fi
 
 verify: ## verify backup
@@ -74,7 +74,7 @@ verify: ## verify backup
 			echo "I couldn't get $(REMOTEDEST)" | mail -s "Is $(REMOTEDEST) active?" yabuki ; \
 		fi \
 	else \
-		echo "Are you be in $(EXECMACHINE)?"; \
+		echo "Are you in $(EXECMACHINE)?"; \
 	fi
 
 list: ## get list of backups
@@ -88,7 +88,7 @@ list: ## get list of backups
 			echo "I couldn't get $(REMOTEDEST)" | mail -s "Is $(REMOTEDEST) active?" yabuki ; \
 		fi \
 	else \
-		echo "Are you be in $(EXECMACHINE)?"; \
+		echo "Are you in $(EXECMACHINE)?"; \
 	fi
 
 remove-older-than: ## remove old backup sets
@@ -104,7 +104,7 @@ remove-older-than: ## remove old backup sets
 			echo "I couldn't get $(REMOTEDEST)" | mail -s "Is $(REMOTEDEST) active?" yabuki ; \
 		fi \
 	else \
-		echo "Are you be in $(EXECMACHINE)?"; \
+		echo "Are you in $(EXECMACHINE)?"; \
 	fi
 
 help: ## Print this help
