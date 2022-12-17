@@ -53,13 +53,14 @@ compare: ## compare now
 			--exclude-globbing-filelist '$(EXCLUDEFILE)' \
 			/home/ \
 			$(DEST)/home/ ; \
-			echo "exit code \$$?" \
+			echo "exit code $$?" \
 		else \
 			echo "I couldn't get $(DEST)" | mail -s "Is $(DEST) active?" yabuki ; \
 		fi \
 	else \
 		echo "Are you be in $(EXECMACHINE)?"; \
 	fi
+	echo "exit code $$?"
 
 verify: ## verify backup
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
