@@ -15,7 +15,7 @@ EXECMACHINE := Odayla
 backup: ## backup command
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
 		if [ -d '$(DEST)' ]; then \
-			/usr/bin/rdiff-backup \
+			/usr/bin/rdiff-backup backup \
 			--print-statistics \
 			--exclude-globbing-filelist '$(EXCLUDEFILE)' \
 			/home/ \
@@ -31,8 +31,8 @@ backup: ## backup command
 bk: ## force backup
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
 		if [ -d '$(DEST)' ]; then \
-			/usr/bin/rdiff-backup \
-			-b \
+			/usr/bin/rdiff-backup backup \
+			--force \
 			--print-statistics \
 			--exclude-globbing-filelist '$(EXCLUDEFILE)' \
 			/home/ \
@@ -49,7 +49,7 @@ compare: ## compare now
 	if [ `hostname` == $(EXECMACHINE) ]; then \
 		if [ -d '$(DEST)' ]; then \
 			/usr/bin/rdiff-backup \
-			--compare \
+			compare \
 			--exclude-globbing-filelist '$(EXCLUDEFILE)' \
 			/home/ \
 			$(DEST)/home/ ; \
@@ -66,8 +66,7 @@ verify: ## verify backup
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
 		if [ -d '$(DEST)' ]; then \
 			/usr/bin/rdiff-backup \
-			--verify \
-			--exclude-globbing-filelist '$(EXCLUDEFILE)' \
+			verify \
 			$(DEST)/home/ ; \
 			echo "exit code \$$?" \
 		else \
@@ -81,8 +80,7 @@ list: ## get list of backups
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
 		if [ -d '$(DEST)' ]; then \
 			/usr/bin/rdiff-backup \
-			-l \
-			--exclude-globbing-filelist '$(EXCLUDEFILE)' \
+			list increments \
 			$(DEST)/home/ ; \
 			echo "exit code \$$?" \
 		else \
@@ -96,6 +94,7 @@ remove-older-than: ## remove old backup sets
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
 		if [ -d '$(DEST)' ]; then \
 			/usr/bin/rdiff-backup \
+			remove \
 			--force \
 			--remove-older-than 1M \
 			--print-statistics \
