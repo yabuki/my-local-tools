@@ -8,7 +8,6 @@ EXECMACHINE := Orlanth
 DEST := /misc/removable/Orlanth
 REMOTEDEST := yabuki@odayla.local::/misc/removable/Orlanth
 EXCLUDEFILE := ./Orlanth-exclude.list
-#EXCLUDEFILE := /home/yabuki/scm/git/my-local-tools/rdiff-backup/Orlanth/Orlanth-exclude.list
 
 # all targets are phony
 .PHONY: $(shell egrep -o ^[a-zA-Z_-]+: $(MAKEFILE_LIST) | sed 's/://')
@@ -19,7 +18,7 @@ EXCLUDEFILE := ./Orlanth-exclude.list
 backup: ## backup command
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
 		if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
-			/usr/bin/rdiff-backup \
+			/usr/bin/rdiff-backup --new backup \
 			--print-statistics \
 			--exclude-globbing-filelist '$(EXCLUDEFILE)' \
 			/home/ \
@@ -28,14 +27,14 @@ backup: ## backup command
 			echo "I couldn't get $(REMOTEDEST)" | mail -s "Is $(REMOTEDEST) active?" yabuki ; \
 		fi \
 	else \
-		echo "Are you be in $(EXECMACHINE)?"; \
+		echo "Are you in $(EXECMACHINE)?"; \
 	fi
 
 bk: ## force backup
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
 		if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
-		/usr/bin/rdiff-backup \
-		-b \
+		/usr/bin/rdiff-backup --new backup \
+		--force \
 		--print-statistics \
 		--exclude-globbing-filelist '$(EXCLUDEFILE)' \
 		/home/ \
@@ -44,14 +43,14 @@ bk: ## force backup
 			echo "I couldn't get $(REMOTEDEST)" | mail -s "Is $(REMOTEDEST) active?" yabuki ; \
 		fi \
 	else \
-		echo "Are you be in $(EXECMACHINE)?"; \
+		echo "Are you in $(EXECMACHINE)?"; \
 	fi
 
 compare: ## compare now
 	if [ `hostname` == $(EXECMACHINE) ]; then \
 		if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
-			/usr/bin/rdiff-backup \
-			--compare \
+			/usr/bin/rdiff-backup --new \
+			compare \
 			--exclude-globbing-filelist '$(EXCLUDEFILE)' \
 			/home/ \
 			$(REMOTEDEST)/home/ ; \
@@ -60,41 +59,40 @@ compare: ## compare now
 			echo "I couldn't get $(REMOTEDEST)" | mail -s "Is $(REMOTEDEST) active?" yabuki ; \
 		fi \
 	else \
-		echo "Are you be in $(EXECMACHINE)?"; \
+		echo "Are you in $(EXECMACHINE)?"; \
 	fi
 
 verify: ## verify backup
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
 		if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
-			/usr/bin/rdiff-backup \
-			--verify \
-			--exclude-globbing-filelist '$(EXCLUDEFILE)' \
+			/usr/bin/rdiff-backup --new \
+			verify \
 			$(REMOTEDEST)/home/ ; \
 		else \
 			echo "I couldn't get $(REMOTEDEST)" | mail -s "Is $(REMOTEDEST) active?" yabuki ; \
 		fi \
 	else \
-		echo "Are you be in $(EXECMACHINE)?"; \
+		echo "Are you in $(EXECMACHINE)?"; \
 	fi
 
 list: ## get list of backups
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
 		if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
-			/usr/bin/rdiff-backup \
-			-l \
-			--exclude-globbing-filelist '$(EXCLUDEFILE)' \
+			/usr/bin/rdiff-backup --new \
+			list increments \
 			$(REMOTEDEST)/home/ ; \
 		else \
 			echo "I couldn't get $(REMOTEDEST)" | mail -s "Is $(REMOTEDEST) active?" yabuki ; \
 		fi \
 	else \
-		echo "Are you be in $(EXECMACHINE)?"; \
+		echo "Are you in $(EXECMACHINE)?"; \
 	fi
 
 remove-older-than: ## remove old backup sets
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
 		if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
-			/usr/bin/rdiff-backup \
+			/usr/bin/rdiff-backup --new \
+			remove \
 			--force \
 			--remove-older-than 1M \
 			--print-statistics \
@@ -104,7 +102,7 @@ remove-older-than: ## remove old backup sets
 			echo "I couldn't get $(REMOTEDEST)" | mail -s "Is $(REMOTEDEST) active?" yabuki ; \
 		fi \
 	else \
-		echo "Are you be in $(EXECMACHINE)?"; \
+		echo "Are you in $(EXECMACHINE)?"; \
 	fi
 
 help: ## Print this help
