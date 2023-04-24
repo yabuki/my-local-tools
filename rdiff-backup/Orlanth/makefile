@@ -8,7 +8,6 @@ EXECMACHINE := Orlanth
 DEST := /misc/removable/Orlanth
 REMOTEDEST := yabuki@odayla.local::/misc/removable/Orlanth
 EXCLUDEFILE := ./Orlanth-exclude.list
-#EXCLUDEFILE := /home/yabuki/scm/git/my-local-tools/rdiff-backup/Orlanth/Orlanth-exclude.list
 
 # all targets are phony
 .PHONY: $(shell egrep -o ^[a-zA-Z_-]+: $(MAKEFILE_LIST) | sed 's/://')
@@ -19,7 +18,7 @@ EXCLUDEFILE := ./Orlanth-exclude.list
 backup: ## backup command
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
 		if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
-			/usr/bin/rdiff-backup backup \
+			/usr/bin/rdiff-backup --new backup \
 			--print-statistics \
 			--exclude-globbing-filelist '$(EXCLUDEFILE)' \
 			/home/ \
@@ -34,7 +33,7 @@ backup: ## backup command
 bk: ## force backup
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
 		if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
-		/usr/bin/rdiff-backup backup \
+		/usr/bin/rdiff-backup --new backup \
 		--force \
 		--print-statistics \
 		--exclude-globbing-filelist '$(EXCLUDEFILE)' \
@@ -50,7 +49,7 @@ bk: ## force backup
 compare: ## compare now
 	if [ `hostname` == $(EXECMACHINE) ]; then \
 		if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
-			/usr/bin/rdiff-backup \
+			/usr/bin/rdiff-backup --new \
 			compare \
 			--exclude-globbing-filelist '$(EXCLUDEFILE)' \
 			/home/ \
@@ -66,9 +65,8 @@ compare: ## compare now
 verify: ## verify backup
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
 		if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
-			/usr/bin/rdiff-backup \
+			/usr/bin/rdiff-backup --new \
 			verify \
-			--exclude-globbing-filelist '$(EXCLUDEFILE)' \
 			$(REMOTEDEST)/home/ ; \
 		else \
 			echo "I couldn't get $(REMOTEDEST)" | mail -s "Is $(REMOTEDEST) active?" yabuki ; \
@@ -80,7 +78,7 @@ verify: ## verify backup
 list: ## get list of backups
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
 		if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
-			/usr/bin/rdiff-backup \
+			/usr/bin/rdiff-backup --new \
 			list increments \
 			$(REMOTEDEST)/home/ ; \
 		else \
@@ -93,7 +91,7 @@ list: ## get list of backups
 remove-older-than: ## remove old backup sets
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
 		if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
-			/usr/bin/rdiff-backup \
+			/usr/bin/rdiff-backup --new \
 			remove \
 			--force \
 			--remove-older-than 1M \
