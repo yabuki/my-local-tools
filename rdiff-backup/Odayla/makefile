@@ -90,15 +90,28 @@ list: ## get list of backups
 		echo "Are you in $(EXECMACHINE)?"; \
 	fi
 
-remove-older-than: ## remove old backup sets
+list-increments: ## list increments
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
 		if [ -d '$(DEST)' ]; then \
 			/usr/bin/rdiff-backup \
-			remove \
+			list increments \
+			$(DEST)/home/ ; \
+			echo "exit code \$$?" \
+		else \
+			echo "I couldn't get $(DEST)" | mail -s "Is $(DEST) active?" yabuki ; \
+		fi \
+	else \
+		echo "Are you in $(EXECMACHINE)?"; \
+	fi
+
+
+remove-increments-older-than: ## remove old backup sets
+	@if [ `hostname` == $(EXECMACHINE) ]; then \
+		if [ -d '$(DEST)' ]; then \
+			/usr/bin/rdiff-backup \
+			remove increments \
 			--force \
-			--remove-older-than 1M \
-			--print-statistics \
-			--exclude-globbing-filelist '$(EXCLUDEFILE)' \
+			--older-than 1M \
 			$(DEST)/home/ ; \
 			echo "exit code \$$?" \
 		else \
