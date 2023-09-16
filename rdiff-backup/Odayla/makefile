@@ -109,8 +109,8 @@ remove-increments-older-than: ## remove old backup sets
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
 		if [ -d '$(DEST)' ]; then \
 			/usr/bin/rdiff-backup \
-			remove increments \
 			--force \
+			remove increments \
 			--older-than 1M \
 			$(DEST)/home/ ; \
 			echo "exit code \$$?" \
