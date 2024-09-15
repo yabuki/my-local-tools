@@ -93,3 +93,30 @@ make: *** [makefile:51: compare] エラー 1
 
 差分自体の内容はわかるので、どのように対処するべきかは、原因が追求しきれて
 いないが、気がついたときに直すことにする。
+
+## Thinkpad T480 touchpad ON/OFF
+
+自分Thinkpad T480のタッチパッドが大体は不要なんだけど、大きな動きを
+させたいときだけONにしたいかも。ってことで xinputを使って
+タッチバッドのON/OFFをする。スクリプトを書いて置いておく。
+
+元ネタは、[How to Enable/Disable Touchpad in Linux | Baeldung on Linux](https://www.baeldung.com/linux/enable-disable-touchpad/)
+になります。
+
+決め打ちスクリプトなんで他のマシンに転用するときは、忘れずに
+読むこと。将来他のノートでも同じニーズがでたらどうするかも考えてね。
+(yadmで管理する?)
+
+### 軽く事前設計
+
+1. 使い方を出す。-h --helpも同様に
+
+### 依存するもの/使う物
+
+- git@github.com:ko1nksm/getoptions.git
+    - コマンドラインパーサー
+    - [シェルスクリプト(bash等)の引数解析が究極的に簡単になりました #Bash - Qiita](https://qiita.com/ko1nksm/items/9ee16927b7f8899c4a9e)
+- shellcheck
+    - `apt install shellcheck`
+- xinput
+    - タッチパッドのon/offに利用している
