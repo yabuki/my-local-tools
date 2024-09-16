@@ -6,6 +6,7 @@ VERSION="0.1"
 PROG=${0##*/}
 
 # shellcheck disable=SC1083
+# @getoptions
 parser_definition() {
   setup   REST help:usage -- "Usage: $PROG [options]... [arguments]..." ''
   msg -- 'Options:'
@@ -18,8 +19,16 @@ parser_definition() {
   disp    :usage  -h --help
   disp    VERSION    --version
 }
+# @end
+
+# @gengetoptions parser -i parser_definition parse
+#
+#     INSERTED HERE
+#
+# @end
 
 if [ ! -e /usr/bin/xinput ]; then
+  echo "you need to install xinput"
   exit 1
 fi
 
