@@ -116,6 +116,8 @@ make: *** [makefile:51: compare] エラー 1
 - git@github.com:ko1nksm/getoptions.git
     - コマンドラインパーサー
     - [シェルスクリプト(bash等)の引数解析が究極的に簡単になりました #Bash - Qiita](https://qiita.com/ko1nksm/items/9ee16927b7f8899c4a9e)
+    - 実行する場所にはインストールしておくこと。gengetoptionsでembedしても
+    getoptionsコマンドを呼んでいるので必要だ。
 - shellcheck
     - `apt install shellcheck`
 - xinput
