@@ -102,8 +102,6 @@ fi
 eval "$(getoptions parser_definition) exit 1"
 
 #echo "FLAG: $FLAG, PARAM: $PARAM, OPTION: $OPTION"
-echo $#
-echo "TPAD: $TPAD"
 #printf '%s\n' "$@" # rest arguments
 
 case "$TPAD" in
