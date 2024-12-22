@@ -18,7 +18,9 @@ EXCLUDEFILE := ./Orlanth-exclude.list
 backup: ## backup command
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
 		if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
-			/usr/bin/rdiff-backup --new backup \
+			/usr/bin/rdiff-backup \
+			--api-version 201 \
+			--new backup \
 			--print-statistics \
 			--exclude-globbing-filelist '$(EXCLUDEFILE)' \
 			/home/ \
@@ -33,7 +35,9 @@ backup: ## backup command
 bk: ## force backup
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
 		if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
-		/usr/bin/rdiff-backup --new backup \
+		/usr/bin/rdiff-backup \
+		--api-version 201 \
+		--new backup \
 		--force \
 		--print-statistics \
 		--exclude-globbing-filelist '$(EXCLUDEFILE)' \
@@ -50,6 +54,7 @@ compare: ## compare now
 	if [ `hostname` == $(EXECMACHINE) ]; then \
 		if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
 			/usr/bin/rdiff-backup --new \
+			--api-version 201 \
 			compare \
 			--exclude-globbing-filelist '$(EXCLUDEFILE)' \
 			/home/ \
@@ -66,6 +71,7 @@ verify: ## verify backup
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
 		if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
 			/usr/bin/rdiff-backup --new \
+			--api-version 201 \
 			verify \
 			$(REMOTEDEST)/home/ ; \
 		else \
@@ -79,6 +85,7 @@ list: ## get list of backups
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
 		if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
 			/usr/bin/rdiff-backup --new \
+			--api-version 201 \
 			list increments \
 			$(REMOTEDEST)/home/ ; \
 		else \
@@ -92,6 +99,7 @@ remove-older-than: ## remove old backup sets
 	@if [ `hostname` == $(EXECMACHINE) ]; then \
 		if [ $$(ssh $(USER)@$(TARGET) "[ -d $(DEST) ];echo \$$?") -eq 0 ]; then \
 			/usr/bin/rdiff-backup --new \
+			--api-version 201 \
 			remove \
 			--force \
 			--remove-older-than 1M \
