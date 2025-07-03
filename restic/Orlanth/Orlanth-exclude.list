@@ -1,12 +1,18 @@
 **.swp
 /home/*/**.swp
 /home/*/**.swo
-/home/yabuki/.cache/
 /home/yabuki/scm/git/webdino/reporter/db_data/
 /home/yabuki/scm/git/webdino/reporter/db_data/*
+/home/yabuki/.config/0ad/logs/*
 /home/yabuki/.config/chromium/Profile 1/IndexedDB/
 /home/yabuki/.config/google-chrome/Default/*
 /home/yabuki/.xsession-errors
 /home/yabuki/.xsession-errors.old
-/home/yabuki/.config/0ad/logs/*
 /home/yabuki/.local/share/0ad/replays/*
+/home/yabuki/.cache/*
+/home/yabuki/.cache/google-chrome/Default/Cache/Cache_Data/
+/home/yabuki/.cache/google-chrome/Default/Code Cache/
+/home/yabuki/.cache/google-chrome/Profile 1/Cache/Cache_Data/
+/home/yabuki/.cache/google-chrome/Profile 1/Code Cache/
+/home/yabuki/.cache/mesa_shader_cache/
+/home/yabuki/.cache/mozilla/firefox/uko6xwz7.default-esr/cache2/
