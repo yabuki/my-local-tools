@@ -32,7 +32,7 @@ ls: ## get list of backups
 	sudo /usr/bin/restic -r ${REPO} --verbose ls latest
 
 stats: ## statss
-	sudo /usr/bin/restic -r ${REPO}  --verbose stats
+	@env sudo /usr/bin/restic -r ${REPO}  --verbose stats
 
 remove-older-than: ## remove old backup sets
 
