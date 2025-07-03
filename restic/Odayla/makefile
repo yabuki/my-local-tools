@@ -18,7 +18,7 @@ RESTIC_PASSWORD := odayla
 #.PHONY: backup bk compare verify list
 
 backup: ## backup command
-	sudo @env /usr/bin/restic -r ${REPO} --verbose backup --exclude-file Odayla-exclude.list /home/
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup --exclude-file Odayla-exclude.list /home/
 
 compare: ## compare now
 
@@ -32,7 +32,7 @@ ls: ## get list of backups
 	sudo /usr/bin/restic -r ${REPO} --verbose ls latest
 
 stats: ## statss
-	sudo /usr/bin/restic -r ${REPO}  --verbose stats
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO}  --verbose stats
 
 remove-older-than: ## remove old backup sets
 
