@@ -23,13 +23,13 @@ compare: ## compare now
 verify: ## verify backup
 
 list: ## get list of backups
-	sudo /usr/bin/restic -r /misc/removable/Orlanth --verbose list
+	sudo /usr/bin/restic -r /misc/removable/Odayla --verbose list
 
 ls: ## get list of backups
-	sudo /usr/bin/restic -r /misc/removable/Orlanth --verbose ls latest
+	sudo /usr/bin/restic -r /misc/removable/Odayla --verbose ls latest
 
 stats: ## statss
-	sudo /usr/bin/restic -r /misc/removable/Orlanth --verbose stats
+	sudo /usr/bin/restic -r /misc/removable/Odayla --verbose stats
 
 remove-older-than: ## remove old backup sets
 
