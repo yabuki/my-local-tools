@@ -14,7 +14,7 @@ RESTIC_PASSWORD := orlanth
 backup: ## backup command
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup \
 	 	--exclude-file Orlanth-exclude.list \
-		--include-file dict.list \
+		--file-from dict.list \
 	 	/home/
 
 compare: ## compare now
@@ -23,7 +23,11 @@ check: ## check backup
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose check --read-data
 
 dryrun: ## Dry run
-	sudo @env /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup --dry-run -vv --exclude-file Orlanth-exclude.list /home/
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup \
+		--dry-run -vv \
+		--exclude-file Orlanth-exclude.list \
+		--files-from dict.list \
+ 		/home/
 
 list: ## get list of backups
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose list
