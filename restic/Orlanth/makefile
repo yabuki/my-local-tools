@@ -14,7 +14,7 @@ RESTIC_PASSWORD := orlanth
 backup: ## backup command
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup \
 	 	--exclude-file Orlanth-exclude.list \
-		--file-from dict.list \
+		--files-from dict.list \
 	 	/home/
 
 compare: ## compare now
