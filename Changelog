@@ -1,3 +1,7 @@
+2025-07-03 (木)  Yukiharu YABUKI <yabuki@netfort.gr.jp>
+
+* rdiff-backupからresticにバックアップコマンドを変更した
+
 2023-04-24 (月)  Yukiharu YABUKI <yabuki@netfort.gr.jp>
 
 * 新しいコマンドライン体系に移行しているのに、まだ警告がでるのは謎。
