@@ -1,0 +1,4 @@
+/etc/auto.misc
+/etc/auto.master
+/etc/auto.master.d/
+/etc/default/autofs

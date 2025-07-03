@@ -15,19 +15,32 @@ backup: ## backup command
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup \
 	 	--exclude-file Orlanth-exclude.list \
 		--files-from dict.list \
+		--files-from etc.list \
 	 	/home/
+
+backup-dryrun: ## Dry run for backup
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup \
+		--dry-run \
+		--exclude-file Orlanth-exclude.list \
+		--files-from dict.list \
+		--files-from etc.list \
+ 		/home/
 
 compare: ## compare now
 
 check: ## check backup
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose check --read-data
 
-dryrun: ## Dry run
-	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup \
-		--dry-run -vv \
-		--exclude-file Orlanth-exclude.list \
-		--files-from dict.list \
- 		/home/
+forget: ## remove snapshots
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose forget \
+		--prune
+		--keep-last 7
+
+forget-dryrun: ## dry run for remove snapshots
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose forget \
+		--prune \
+		--keep-last 7 \
+		--dry-run
 
 list: ## get list of backups
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose list
@@ -35,10 +48,11 @@ list: ## get list of backups
 ls: ## get list of backups
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose ls latest
 
+snapshots: ## get list of backups
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose snapshots
+
 stats: ## statss
 	sudo /usr/bin/restic --password-file passwd.txt  -r ${REPO} --verbose stats
-
-remove-older-than: ## remove old backup sets
 
 help: ## Print this help
 	@echo 'Usage: make  [target]'
