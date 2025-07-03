@@ -12,18 +12,24 @@ RESTIC_PASSWORD := orlanth
 #.PHONY: backup bk compare verify list
 
 backup: ## backup command
-	sudo @env /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup --exclude-file Orlanth-exclude.list /home/
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup \
+	 	--exclude-file Orlanth-exclude.list \
+		--include-file dict.list \
+	 	/home/
 
 compare: ## compare now
 
 check: ## check backup
-	sudo /usr/bin/restic -r ${REPO} --verbose check --read-data
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose check --read-data
+
+dryrun: ## Dry run
+	sudo @env /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup --dry-run -vv --exclude-file Orlanth-exclude.list /home/
 
 list: ## get list of backups
-	sudo /usr/bin/restic -r ${REPO} --verbose list
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose list
 
 ls: ## get list of backups
-	sudo /usr/bin/restic -r ${REPO} --verbose ls latest
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose ls latest
 
 stats: ## statss
 	sudo /usr/bin/restic --password-file passwd.txt  -r ${REPO} --verbose stats
