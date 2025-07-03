@@ -16,12 +16,7 @@ backup: ## backup command
 		--files-from etc.list \
 	 	/home/
 
-compare: ## compare now
-
-check: ## check backup
-	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose check --read-data
-
-dryrun: ## Dry run
+backup-dryrun: ## Dry run
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup  \
 		--dry-run -vv \
 		--exclude-file Odayla-exclude.list \
@@ -29,11 +24,30 @@ dryrun: ## Dry run
 		--files-from etc.list \
 	 	/home/
 
+compare: ## compare now
+
+check: ## check backup
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose check --read-data
+
+forget: ## get list of backups
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose forget \
+		--prune
+		--keep-last 7
+
+forget-dryrun: ## get list of backups
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose forget \
+		--prune \
+		--keep-last 7 \
+		--dry-run
+
 list: ## get list of backups
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose list
 
 ls: ## get list of backups
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose ls latest
+
+snapshots: ## get list of backups
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose snapshots
 
 stats: ## statss
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO}  --verbose stats
