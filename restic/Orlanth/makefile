@@ -3,12 +3,7 @@ SHELL := /bin/bash
 .SHELLFLAGS := -eu -o pipefail -c
 .DEFAULT_GOAL := help
 REPO := /misc/removable/Orlanth
-USER := yabuki
-TARGET := odayla.local
-EXECMACHINE := Orlanth
-DEST := /misc/removable/Orlanth
-REMOTEDEST := yabuki@odayla.local::/misc/removable/Orlanth
-EXCLUDEFILE := ./Orlanth-exclude.list
+RESTIC_PASSWORD := orlanth
 
 # all targets are phony
 .PHONY: $(shell egrep -o ^[a-zA-Z_-]+: $(MAKEFILE_LIST) | sed 's/://')
@@ -17,7 +12,7 @@ EXCLUDEFILE := ./Orlanth-exclude.list
 #.PHONY: backup bk compare verify list
 
 backup: ## backup command
-	sudo /usr/bin/restic -r ${REPO} --verbose backup --exclude-file Orlanth-exclude.list /home/
+	sudo @env /usr/bin/restic -r ${REPO} --verbose backup --exclude-file Orlanth-exclude.list /home/
 
 compare: ## compare now
 
