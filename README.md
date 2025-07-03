@@ -1,5 +1,8 @@
 # my-local-tools
 
+## restic
+
+rdiff-backupからresticにパックアップコマンドを変更する。こっちの方が良い。
 
 ## rdiff-backup
 

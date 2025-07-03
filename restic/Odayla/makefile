@@ -20,7 +20,8 @@ backup: ## backup command
 
 compare: ## compare now
 
-verify: ## verify backup
+check: ## check backup
+	sudo /usr/bin/restic -r /misc/removable/Odayla --verbose check --read-data
 
 list: ## get list of backups
 	sudo /usr/bin/restic -r /misc/removable/Odayla --verbose list
