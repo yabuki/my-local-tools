@@ -2,6 +2,7 @@ MAKEFLAGS += --warn-undefined-variables
 SHELL := /bin/bash
 .SHELLFLAGS := -eu -o pipefail -c
 .DEFAULT_GOAL := help
+REPO := /misc/removable/Orlanth
 USER := yabuki
 TARGET := odayla.local
 EXECMACHINE := Orlanth
@@ -16,20 +17,21 @@ EXCLUDEFILE := ./Orlanth-exclude.list
 #.PHONY: backup bk compare verify list
 
 backup: ## backup command
-	sudo /usr/bin/restic -r /misc/removable/Orlanth --verbose backup --exclude-file Orlanth-exclude.list /home/
+	sudo /usr/bin/restic -r ${REPO} --verbose backup --exclude-file Orlanth-exclude.list /home/
 
 compare: ## compare now
 
-verify: ## verify backup
+check: ## check backup
+	sudo /usr/bin/restic -r ${REPO} --verbose check --read-data
 
 list: ## get list of backups
-	sudo /usr/bin/restic -r /misc/removable/Orlanth --verbose list
+	sudo /usr/bin/restic -r ${REPO} --verbose list
 
 ls: ## get list of backups
-	sudo /usr/bin/restic -r /misc/removable/Orlanth --verbose ls latest
+	sudo /usr/bin/restic -r ${REPO} --verbose ls latest
 
 stats: ## statss
-	sudo /usr/bin/restic -r /misc/removable/Orlanth --verbose stats
+	sudo /usr/bin/restic -r ${REPO} --verbose stats
 
 remove-older-than: ## remove old backup sets
 

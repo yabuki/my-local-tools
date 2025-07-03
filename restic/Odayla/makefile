@@ -2,6 +2,7 @@ MAKEFLAGS += --warn-undefined-variables
 SHELL := /bin/bash
 .SHELLFLAGS := -eu -o pipefail -c
 .DEFAULT_GOAL := help
+REPO := /misc/removable/Odayla
 USER := yabuki
 TARGET := odayla.local
 EXECMACHINE := Odayla
@@ -16,21 +17,21 @@ EXCLUDEFILE := ./Orlanth-exclude.list
 #.PHONY: backup bk compare verify list
 
 backup: ## backup command
-	sudo /usr/bin/restic -r /misc/removable/Odayla --verbose backup --exclude-file Odayla-exclude.list /home/
+	sudo /usr/bin/restic -r ${REPO} --verbose backup --exclude-file Odayla-exclude.list /home/
 
 compare: ## compare now
 
 check: ## check backup
-	sudo /usr/bin/restic -r /misc/removable/Odayla --verbose check --read-data
+	sudo /usr/bin/restic -r ${REPO} --verbose check --read-data
 
 list: ## get list of backups
-	sudo /usr/bin/restic -r /misc/removable/Odayla --verbose list
+	sudo /usr/bin/restic -r ${REPO} --verbose list
 
 ls: ## get list of backups
-	sudo /usr/bin/restic -r /misc/removable/Odayla --verbose ls latest
+	sudo /usr/bin/restic -r ${REPO} --verbose ls latest
 
 stats: ## statss
-	sudo /usr/bin/restic -r /misc/removable/Odayla --verbose stats
+	sudo /usr/bin/restic -r ${REPO}  --verbose stats
 
 remove-older-than: ## remove old backup sets
 
