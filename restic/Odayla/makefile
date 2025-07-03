@@ -3,24 +3,16 @@ SHELL := /bin/bash
 .SHELLFLAGS := -eu -o pipefail -c
 .DEFAULT_GOAL := help
 REPO := /misc/removable/Odayla
-USER := yabuki
-TARGET := odayla.local
-EXECMACHINE := Odayla
-DEST := /misc/removable/Orlanth
-REMOTEDEST := yabuki@odayla.local::/misc/removable/Orlanth
-EXCLUDEFILE := ./Orlanth-exclude.list
-RESTIC_PASSWORD := odayla
 
 # all targets are phony
 .PHONY: $(shell egrep -o ^[a-zA-Z_-]+: $(MAKEFILE_LIST) | sed 's/://')
 
-
-#.PHONY: backup bk compare verify list
+#.PHONY: backup compare check dryrun list ls stats
 
 backup: ## backup command
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup \
 		--exclude-file Odayla-exclude.list \
-	 	--include-file dict.list \
+	 	--files-from target.list \
 	 	/home/
 
 compare: ## compare now
@@ -29,7 +21,11 @@ check: ## check backup
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose check --read-data
 
 dryrun: ## Dry run
-	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup  --dry-run -vv --exclude-file Odayla-exclude.list /home/
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup  \
+		--dry-run -vv \
+		--exclude-file Odayla-exclude.list \
+		--files-from target.list \
+	 	/home/
 
 list: ## get list of backups
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose list
@@ -39,8 +35,6 @@ ls: ## get list of backups
 
 stats: ## statss
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO}  --verbose stats
-
-remove-older-than: ## remove old backup sets
 
 help: ## Print this help
 	@echo 'Usage: make  [target]'
