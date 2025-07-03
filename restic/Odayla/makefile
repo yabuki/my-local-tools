@@ -12,7 +12,8 @@ REPO := /misc/removable/Odayla
 backup: ## backup command
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup \
 		--exclude-file Odayla-exclude.list \
-	 	--files-from dict.list etc.list \
+	 	--files-from dict.list \
+		--files-from etc.list \
 	 	/home/
 
 compare: ## compare now
@@ -24,7 +25,8 @@ dryrun: ## Dry run
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup  \
 		--dry-run -vv \
 		--exclude-file Odayla-exclude.list \
-		--files-from dict.list etc.list \
+		--files-from dict.list \
+		--files-from etc.list \
 	 	/home/
 
 list: ## get list of backups
