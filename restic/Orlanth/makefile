@@ -2,7 +2,8 @@ MAKEFLAGS += --warn-undefined-variables
 SHELL := /bin/bash
 .SHELLFLAGS := -eu -o pipefail -c
 .DEFAULT_GOAL := help
-REPO := /misc/removable/Orlanth
+#REPO := /misc/removable/Orlanth
+REPO := /misc/removable/restic
 RESTIC_PASSWORD := orlanth
 
 # all targets are phony
@@ -12,6 +13,13 @@ RESTIC_PASSWORD := orlanth
 #.PHONY: backup bk compare verify list
 
 backup: ## backup command
+	sudo /usr/bin/restic --password-file passwd.txt -r sftp:root@Odayla.local:/${REPO} --verbose backup \
+	 	--exclude-file Orlanth-exclude.list \
+		--files-from dict.list \
+		--files-from etc.list \
+	 	/home/
+
+backup-native: ## backup command
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup \
 	 	--exclude-file Orlanth-exclude.list \
 		--files-from dict.list \
@@ -19,7 +27,7 @@ backup: ## backup command
 	 	/home/
 
 backup-dryrun: ## Dry run for backup
-	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup \
+	sudo /usr/bin/restic --password-file passwd.txt -r sftp:root@Odayla.local:/${REPO} --verbose backup \
 		--dry-run \
 		--exclude-file Orlanth-exclude.list \
 		--files-from dict.list \
@@ -48,8 +56,11 @@ list: ## get list of backups
 ls: ## get list of backups
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose ls latest
 
+mount: ## mount filesystem /mnt
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose mount /mnt
+
 snapshots: ## get list of backups
-	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose snapshots
+	sudo /usr/bin/restic --password-file passwd.txt -r sftp:root@Odayla.local:/${REPO} --verbose snapshots --host Orlanth
 
 stats: ## statss
 	sudo /usr/bin/restic --password-file passwd.txt  -r ${REPO} --verbose stats
