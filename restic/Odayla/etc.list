@@ -2,3 +2,4 @@
 /etc/auto.master
 /etc/auto.master.d/
 /etc/default/autofs
+/etc/ssh/sshd_config
