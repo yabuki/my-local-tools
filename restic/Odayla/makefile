@@ -50,6 +50,15 @@ list: ## get list of backups
 ls: ## get list of backups
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose ls latest
 
+mount: ## mount filesystem /mnt
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose mount /mnt
+
+prune: ## prune data
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose prune
+
+prune-dryrun: ## prune data
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose prune --dry-run
+
 snapshots: ## get list of backups
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose snapshots
 
