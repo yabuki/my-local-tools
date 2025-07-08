@@ -12,6 +12,7 @@ RESTIC_PASSWORD := orlanth
 
 #.PHONY: backup bk compare verify list
 
+## バックアップ ##
 backup: ## backup command
 	sudo /usr/bin/restic --password-file passwd.txt -r sftp:root@Odayla.local:/${REPO} --verbose backup \
 	 	--exclude-file Orlanth-exclude.list \
@@ -42,9 +43,12 @@ backup-dryrun: ## Dry run for backup
 
 compare: ## compare now
 
+## リポジトリのチェック ##
 check: ## check backup
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose check --read-data
 
+
+## outdateなパックアップを消去 ##
 forget: ## remove snapshots
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose forget \
 		--prune
@@ -62,23 +66,33 @@ list: ## get list of backups
 ls: ## get list of backups
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose ls latest
 
+## 取り出す ##
 mount: ## mount filesystem /mnt
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose mount /mnt
 
+## リポジトリのメンテナンス ##
 prune: ## prune data
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose prune
 
 prune-dryrun: ## prune data
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose prune --dry-run
 
-snapshots: ## get list of backups
+## スナップショット一覧 ##
+snapshots: ## get list of backups(for Orlanth)
 	sudo /usr/bin/restic --password-file passwd.txt -r sftp:root@Odayla.local:/${REPO} --verbose snapshots --host Orlanth
 
-stats: ## statss
+snapshots-all: ## get list of backups (全部)
+	sudo /usr/bin/restic --password-file passwd.txt -r sftp:root@Odayla.local:/${REPO} --verbose snapshots
+
+## 統計情報 ##
+stats: ## stats
 	sudo /usr/bin/restic --password-file passwd.txt  -r ${REPO} --verbose stats
 
-help: ## Print this help
-	@echo 'Usage: make  [target]'
-	@echo ''
-	@echo 'Targets:'
-	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+#	help: ## Print this help
+#		@echo 'Usage: make  [target]'
+#		@echo ''
+#		@echo 'Targets:'
+#		@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+help:
+	@grep -E -e '^[a-zA-Z_-]+:.*?## .*$$' -e '^## .* ##$$' $(MAKEFILE_LIST) \
+		| ../../help.awk | less -R
