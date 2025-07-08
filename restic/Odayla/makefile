@@ -35,13 +35,13 @@ check: ## check backup
 
 forget: ## get list of backups
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose forget \
-		--prune
-		--keep-last 7
+		--prune \
+		--keep-daily 14
 
 forget-dryrun: ## get list of backups
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose forget \
 		--prune \
-		--keep-last 7 \
+		--keep-daily 14 \
 		--dry-run
 
 list: ## get list of backups
