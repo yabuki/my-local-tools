@@ -14,7 +14,9 @@ backup: ## backup command
 		--exclude-file Odayla-exclude.list \
 	 	--files-from dict.list \
 		--files-from etc.list \
-	 	/home/
+		--files-from var.list \
+	 	/home/ \
+		/root/
 
 backup-dryrun: ## Dry run
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup  \
@@ -22,7 +24,9 @@ backup-dryrun: ## Dry run
 		--exclude-file Odayla-exclude.list \
 		--files-from dict.list \
 		--files-from etc.list \
-	 	/home/
+		--files-from var.list \
+	 	/home/ \
+		/root/
 
 compare: ## compare now
 

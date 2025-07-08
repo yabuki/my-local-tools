@@ -17,14 +17,18 @@ backup: ## backup command
 	 	--exclude-file Orlanth-exclude.list \
 		--files-from dict.list \
 		--files-from etc.list \
-	 	/home/
+		--files-from var.list \
+	 	/home/ \
+		/root/
 
 backup-native: ## backup command
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup \
 	 	--exclude-file Orlanth-exclude.list \
 		--files-from dict.list \
 		--files-from etc.list \
-	 	/home/
+		--files-from var.list \
+	 	/home/ \
+		/root/
 
 backup-dryrun: ## Dry run for backup
 	sudo /usr/bin/restic --password-file passwd.txt -r sftp:root@Odayla.local:/${REPO} --verbose backup \
@@ -32,7 +36,9 @@ backup-dryrun: ## Dry run for backup
 		--exclude-file Orlanth-exclude.list \
 		--files-from dict.list \
 		--files-from etc.list \
- 		/home/
+		--files-from var.list \
+ 		/home/ \
+		/root/
 
 compare: ## compare now
 
