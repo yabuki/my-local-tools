@@ -44,10 +44,12 @@ forget-dryrun: ## get list of backups
 		--keep-daily 14 \
 		--dry-run
 
-list: ## get list of backups
-	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose list
+# snapshotsとかindexとかのリストが取れるが、何に使うのかいまいちわからないので
+# 必要になるまでコメントにしておく
+#list: ## get list of backups
+#	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose list
 
-ls: ## get list of backups
+ls: ## get list of latest backups
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose ls latest
 
 mount: ## mount filesystem /mnt
