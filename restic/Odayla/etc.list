@@ -4,3 +4,4 @@
 /etc/default/autofs
 /etc/ssh/sshd_config
 /etc/sudoers.d/
+/etc/fstab
