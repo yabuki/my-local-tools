@@ -3,3 +3,4 @@
 /etc/auto.master.d/
 /etc/default/autofs
 /etc/sudoers.d/
+/etc/fstab
