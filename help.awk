@@ -12,7 +12,8 @@ function cmd_accent(char) {
 }
 
 function ex_comment_accent(char) {
-  accent = start front_black back_black accent_inversion accent_bold accent_underline end
+  #accent = start front_black back_black accent_inversion accent_bold accent_underline end
+  accent = start front_cyan accent_underline end
   return accent char reset
 }
 
