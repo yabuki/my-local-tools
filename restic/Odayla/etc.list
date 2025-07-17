@@ -5,3 +5,4 @@
 /etc/ssh/sshd_config
 /etc/sudoers.d/
 /etc/fstab
+/etc/samba/smb.conf
