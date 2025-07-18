@@ -4,7 +4,8 @@ SHELL := /bin/bash
 .DEFAULT_GOAL := help
 #REPO := /misc/removable/Orlanth
 REPO := /misc/removable/restic
-REMOTE_REPO := sftp:root@Odayla.local:/misc/removable/restic
+#REMOTE_REPO := sftp:root@Odayla.local:/misc/removable/restic
+REMOTE_REPO := /misc/removable/restic
 
 # all targets are phony
 .PHONY: $(shell egrep -o ^[a-zA-Z_-]+: $(MAKEFILE_LIST) | sed 's/://')
@@ -12,34 +13,32 @@ REMOTE_REPO := sftp:root@Odayla.local:/misc/removable/restic
 
 #.PHONY: backup bk compare verify list
 
+## sshfs ##
+open-connection: ## open connection
+	sshfs yabuki@hyperion.netfort.gr.jp:/home/yabuki ./mnt -o default_permissions,allow_other,idmap=user
+
+close-connection: ## close connection
+	fusermount3 -u ./mnt
+
 ## バックアップ ##
 backup: ## backup command
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REMOTE_REPO} --verbose backup \
-	 	--exclude-file Orlanth-exclude.list \
-		--files-from dict.list \
-		--files-from etc.list \
-		--files-from var.list \
-	 	/home/ \
-		/root/
+		--exclude-caches \
+	 	--exclude-file hyperion-exclude.list \
+	 	./mnt/
 
 backup-native: ## backup command
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup \
-	 	--exclude-file Orlanth-exclude.list \
-		--files-from dict.list \
-		--files-from etc.list \
-		--files-from var.list \
-	 	/home/ \
-		/root/
+		--exclude-caches \
+	 	--exclude-file hyperion-exclude.list \
+		./mnt/
 
 backup-dryrun: ## Dry run for backup
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REMOTE_REPO} --verbose backup \
 		--dry-run \
-		--exclude-file Orlanth-exclude.list \
-		--files-from dict.list \
-		--files-from etc.list \
-		--files-from var.list \
- 		/home/ \
-		/root/
+		--exclude-caches \
+		--exclude-file hyperion-exclude.list \
+		./mnt/
 
 compare: ## compare now
 

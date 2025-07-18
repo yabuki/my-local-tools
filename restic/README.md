@@ -6,3 +6,8 @@
 2. initで設定したresticのパスワードは、Odayla/passwd.txtやOrlanth/passwd.txtに書いておく。頑張るなら、gpgで暗号化してもいいが、ローカルで使うだけなので、ここでは頑張らない。
 3. make でコマンド一覧を出せ。
 4. お好きなコマンドを実行する。/etc/sudoersにnopassで設定してもいいかもしれない。
+
+### hyperion
+
+このバックアップ先は、ローカルネットワーク外にある。hyperionからOdaylaにVPNでコネクションを作ると楽だが
+諸事情により難しい。よってsshfsを使って$HOME以下をマウントする方法を試す。
