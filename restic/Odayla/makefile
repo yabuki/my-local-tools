@@ -11,6 +11,7 @@ REPO := /misc/removable/restic
 
 backup: ## backup command
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup \
+		--exclude-caches \
 		--exclude-file Odayla-exclude.list \
 	 	--files-from dict.list \
 		--files-from etc.list \
@@ -21,6 +22,7 @@ backup: ## backup command
 backup-dryrun: ## Dry run
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup  \
 		--dry-run -vv \
+		--exclude-caches \
 		--exclude-file Odayla-exclude.list \
 		--files-from dict.list \
 		--files-from etc.list \

@@ -1,8 +1,10 @@
+/home/yabuki/NAS/
 /home/yabuki/Mail/trash/
 /home/yabuki/Mail/junk/
 **.swp
 /home/*/**.swp
 /home/*/**.swo
+/home/*/**/node_modules/*
 /home/yabuki/.config/0ad/logs/*
 /home/yabuki/.config/chromium/Profile 1/IndexedDB/
 /home/yabuki/.config/google-chrome/Default/*
