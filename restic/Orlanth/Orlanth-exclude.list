@@ -3,6 +3,7 @@
 /home/*/**.swp
 /home/*/**.swo
 /home/*/**/node_modules/*
+/home/*/**/hyperion/mnt/*
 /home/yabuki/scm/git/webdino/reporter/db_data/
 /home/yabuki/scm/git/webdino/reporter/db_data/*
 /home/yabuki/.config/0ad/logs/*
