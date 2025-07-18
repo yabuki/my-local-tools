@@ -5,7 +5,6 @@ SHELL := /bin/bash
 #REPO := /misc/removable/Orlanth
 REPO := /misc/removable/restic
 REMOTE_REPO := sftp:root@Odayla.local:/misc/removable/restic
-RESTIC_PASSWORD := orlanth
 
 # all targets are phony
 .PHONY: $(shell egrep -o ^[a-zA-Z_-]+: $(MAKEFILE_LIST) | sed 's/://')
