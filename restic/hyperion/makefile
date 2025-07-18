@@ -24,12 +24,14 @@ close-connection: ## close connection
 backup: ## backup command
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REMOTE_REPO} --verbose backup \
 		--exclude-caches \
+		--tag hyperion \
 	 	--exclude-file hyperion-exclude.list \
 	 	./mnt/
 
 backup-native: ## backup command
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup \
 		--exclude-caches \
+		--tag hyperion \
 	 	--exclude-file hyperion-exclude.list \
 		./mnt/
 
