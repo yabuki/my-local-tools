@@ -1,8 +1,9 @@
-/etc/auto.misc
 /etc/auto.master
 /etc/auto.master.d/
+/etc/auto.misc
 /etc/default/autofs
+/etc/fstab
+/etc/fuse.conf
+/etc/samba/smb.conf
 /etc/ssh/sshd_config
 /etc/sudoers.d/
-/etc/fstab
-/etc/samba/smb.conf
