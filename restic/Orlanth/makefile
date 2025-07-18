@@ -15,6 +15,7 @@ REMOTE_REPO := sftp:root@Odayla.local:/misc/removable/restic
 ## バックアップ ##
 backup: ## backup command
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REMOTE_REPO} --verbose backup \
+		--exclude-caches \
 	 	--exclude-file Orlanth-exclude.list \
 		--files-from dict.list \
 		--files-from etc.list \
@@ -24,6 +25,7 @@ backup: ## backup command
 
 backup-native: ## backup command
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup \
+		--exclude-caches \
 	 	--exclude-file Orlanth-exclude.list \
 		--files-from dict.list \
 		--files-from etc.list \
@@ -34,6 +36,7 @@ backup-native: ## backup command
 backup-dryrun: ## Dry run for backup
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REMOTE_REPO} --verbose backup \
 		--dry-run \
+		--exclude-caches \
 		--exclude-file Orlanth-exclude.list \
 		--files-from dict.list \
 		--files-from etc.list \
