@@ -3,7 +3,16 @@ SHELL := /bin/bash
 .SHELLFLAGS := -eu -o pipefail -c
 .DEFAULT_GOAL := help
 #REPO := /misc/removable/restic
-REPO := /misc/removable2/restic
+#REPO := /misc/removable2/restic
+
+ifeq ($(wildcard $(c4cf0644-9e83-470c-a96e-1c70af6fb45e)),)
+	REPO := /misc/removable/restic
+else ifeq ($(wildcard $(d93aa829-1f61-41fd-9b12-89f91790575b)),)
+	REPO := /misc/removable2/restic
+else
+  $(error Disk not found)
+endif
+
 
 # all targets are phony
 .PHONY: $(shell egrep -o ^[a-zA-Z_-]+: $(MAKEFILE_LIST) | sed 's/://')
