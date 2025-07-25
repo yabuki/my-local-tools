@@ -5,7 +5,8 @@ SHELL := /bin/bash
 #REPO := /misc/removable/Orlanth
 REPO := /misc/removable/restic
 #REMOTE_REPO := sftp:root@Odayla.local:/misc/removable/restic
-REMOTE_REPO := /misc/removable/restic
+#REMOTE_REPO := /misc/removable/restic
+REMOTE_REPO := /misc/removable2/restic
 
 # all targets are phony
 .PHONY: $(shell egrep -o ^[a-zA-Z_-]+: $(MAKEFILE_LIST) | sed 's/://')
@@ -19,6 +20,11 @@ open-connection: ## open connection
 
 close-connection: ## close connection
 	fusermount3 -u ./mnt
+
+## filesystem ##
+umount-hdd: ## umount /misc
+	sudo /usr/bin/umount /misc/removable
+#	sudo /usr/sbin/e2fsck -cv /dev/sdd1
 
 ## バックアップ ##
 backup: ## backup command

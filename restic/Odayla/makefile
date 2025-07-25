@@ -2,12 +2,16 @@ MAKEFLAGS += --warn-undefined-variables
 SHELL := /bin/bash
 .SHELLFLAGS := -eu -o pipefail -c
 .DEFAULT_GOAL := help
-REPO := /misc/removable/restic
+#REPO := /misc/removable/restic
+REPO := /misc/removable2/restic
 
 # all targets are phony
 .PHONY: $(shell egrep -o ^[a-zA-Z_-]+: $(MAKEFILE_LIST) | sed 's/://')
 
 #.PHONY: backup compare check dryrun list ls stats
+
+init: ## make restic repositry
+	sudo /usr/bin/restic -p passwd.txt init -r ${REPO} --verbose
 
 backup: ## backup command
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup \
@@ -34,6 +38,9 @@ compare: ## compare now
 
 check: ## check backup
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose check --read-data
+
+repair: ## repair index
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose repair index --read-data
 
 forget: ## get list of backups
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose forget \
