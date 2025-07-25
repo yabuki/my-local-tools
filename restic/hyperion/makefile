@@ -6,7 +6,21 @@ SHELL := /bin/bash
 REPO := /misc/removable/restic
 #REMOTE_REPO := sftp:root@Odayla.local:/misc/removable/restic
 #REMOTE_REPO := /misc/removable/restic
-REMOTE_REPO := /misc/removable2/restic
+#REMOTE_REPO := /misc/removable2/restic
+UUID1 := c4cf0644-9e83-470c-a96e-1c70af6fb45e
+UUID2 := d93aa829-1f61-41fd-9b12-89f91790575b
+
+UUID1_EXISTS := $(shell ls /dev/disk/by-uuid/ | grep -q $(UUID1) && echo yes || echo no)
+UUID2_EXISTS := $(shell ls /dev/disk/by-uuid/ | grep -q $(UUID2) && echo yes || echo no)
+
+ifeq ($(UUID1_EXISTS),yes)
+	REPO := /misc/removable/restic
+else ifeq ($(UUID2_EXISTS),yes)
+	REPO := /misc/removable2/restic
+else
+  $(error Disk not found)
+endif
+
 
 # all targets are phony
 .PHONY: $(shell egrep -o ^[a-zA-Z_-]+: $(MAKEFILE_LIST) | sed 's/://')
