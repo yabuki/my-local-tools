@@ -53,8 +53,11 @@ compare: ## compare now
 check: ## check backup
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose check --read-data
 
-repair: ## repair index
+repair-index: ## repair index
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose repair index --read-data
+
+repair-pack: ## repair pack
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose repair pack --read-data
 
 forget: ## get list of backups
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose forget \
