@@ -2,17 +2,56 @@ MAKEFLAGS += --warn-undefined-variables
 SHELL := /bin/bash
 .SHELLFLAGS := -eu -o pipefail -c
 .DEFAULT_GOAL := help
-#REPO := /misc/removable/Orlanth
 REPO := /misc/removable/restic
-REMOTE_REPO := sftp:root@Odayla.local:/misc/removable/restic
+UUID1 := c4cf0644-9e83-470c-a96e-1c70af6fb45e
+UUID2 := d93aa829-1f61-41fd-9b12-89f91790575b
+REMOTE_REPO1 := sftp:root@Odayla.local:/misc/removable/restic
+REMOTE_REPO2 := sftp:root@Odayla.local:/misc/removable2/restic
+#HOSTS := host1 host2 host3
+HOSTS := root@Odayla.local
+
+# UUIDとREPOの対応を検索してREMOTE_REPOに代入
+REMOTE_REPO := $(shell \
+  for h in $(HOSTS); do \
+		echo "Checking $$h..." >&2; \
+    if ssh $$h test -e /dev/disk/by-uuid/$(UUID1); then \
+      echo $(REMOTE_REPO1); exit 0; \
+    elif ssh $$h test -e /dev/disk/by-uuid/$(UUID2); then \
+      echo $(REMOTE_REPO2); exit 0; \
+    fi; \
+  done; \
+  echo NONE; \
+)
+
+ifeq ($(REPO),NONE)
+  $(error Neither UUID1 ($(UUID1)) nor UUID2 ($(UUID2)) found on any of $(HOSTS))
+endif
 
 # all targets are phony
 .PHONY: $(shell egrep -o ^[a-zA-Z_-]+: $(MAKEFILE_LIST) | sed 's/://')
 
+# .env を読み込んでシェル変数にする
+include .env
+export $(shell sed 's/=.*//' .env)
 
 #.PHONY: backup bk compare verify list
 
 ## バックアップ ##
+auto: ## backup command
+	expect -d -c ' \
+		spawn sudo /usr/bin/restic --password-file passwd.txt -r ${REMOTE_REPO} --verbose backup \
+			--exclude-caches \
+			--exclude-file Orlanth-exclude.list \
+			--files-from dict.list \
+			--files-from etc.list \
+			--files-from var.list \
+			/home/ /root/;
+		expect { \
+	'yes/no' { send 'yes\r'; exp_continue } \
+	-regex '.*password: ' { send '${RootPassWord}\n' } \
+	}; \
+	'
+
 backup: ## backup command
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REMOTE_REPO} --verbose backup \
 		--exclude-caches \
@@ -21,7 +60,7 @@ backup: ## backup command
 		--files-from etc.list \
 		--files-from var.list \
 	 	/home/ \
-		/root/
+		/root/;
 
 backup-native: ## backup command
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup \
