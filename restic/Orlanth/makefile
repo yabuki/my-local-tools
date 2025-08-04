@@ -31,8 +31,8 @@ endif
 .PHONY: $(shell egrep -o ^[a-zA-Z_-]+: $(MAKEFILE_LIST) | sed 's/://')
 
 # .env を読み込んでシェル変数にする
-include .env
-export $(shell sed 's/=.*//' .env)
+#include .env
+#export $(shell sed 's/=.*//' .env)
 
 #.PHONY: backup bk compare verify list
 
