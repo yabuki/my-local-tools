@@ -14,9 +14,9 @@ UUID1_EXISTS := $(shell ls /dev/disk/by-uuid/ | grep -q $(UUID1) && echo yes || 
 UUID2_EXISTS := $(shell ls /dev/disk/by-uuid/ | grep -q $(UUID2) && echo yes || echo no)
 
 ifeq ($(UUID1_EXISTS),yes)
-	REPO := /misc/removable/restic
+	REMOTE_REPO := /misc/removable/restic
 else ifeq ($(UUID2_EXISTS),yes)
-	REPO := /misc/removable2/restic
+	REMOTE_REPO := /misc/removable2/restic
 else
   $(error Disk not found)
 endif
@@ -30,10 +30,10 @@ endif
 
 ## sshfs ##
 open-connection: ## open connection
-	sshfs yabuki@hyperion.netfort.gr.jp:/home/yabuki ./mnt -o default_permissions,allow_other,idmap=user
+	sshfs yabuki@hyperion.netfort.gr.jp:/home/yabuki ./hyperion-mnt -o default_permissions,allow_other,idmap=user
 
 close-connection: ## close connection
-	fusermount3 -u ./mnt
+	fusermount3 -u ./hyperion-mnt
 
 ## filesystem ##
 umount-hdd: ## umount /misc
@@ -46,21 +46,21 @@ backup: ## backup command
 		--exclude-caches \
 		--tag hyperion \
 	 	--exclude-file hyperion-exclude.list \
-	 	./mnt/
+		/home/yabuki/scm/git/my-local-tools/restic/hyperion/hyperion-mnt/
 
 backup-native: ## backup command
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup \
 		--exclude-caches \
 		--tag hyperion \
 	 	--exclude-file hyperion-exclude.list \
-		./mnt/
+		/home/yabuki/scm/git/my-local-tools/restic/hyperion/hyperion-mnt/
 
 backup-dryrun: ## Dry run for backup
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REMOTE_REPO} --verbose backup \
 		--dry-run \
 		--exclude-caches \
 		--exclude-file hyperion-exclude.list \
-		./mnt/
+		/home/yabuki/scm/git/my-local-tools/restic/hyperion/hyperion-mnt/
 
 compare: ## compare now
 
@@ -85,7 +85,7 @@ forget-dryrun: ## dry run for remove snapshots
 #	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose list
 
 ls: ## get list of backups
-	sudo /usr/bin/restic --password-file passwd.txt -r ${REMOTE_REPO} --verbose ls latest
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REMOTE_REPO} --verbose ls --recursive --long --path=/home/yabuki/scm/git/my-local-tools/restic/hyperion/mnt/ latest
 
 ## 取り出す ##
 mount: ## mount filesystem /mnt
