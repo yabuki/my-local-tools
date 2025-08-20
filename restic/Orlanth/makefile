@@ -14,10 +14,10 @@ HOSTS := root@Odayla.local
 REMOTE_REPO := $(shell \
   for h in $(HOSTS); do \
 		echo "Checking $$h..." >&2; \
-    if ssh $$h test -e /dev/disk/by-uuid/$(UUID1); then \
-      echo $(REMOTE_REPO1); exit 0; \
-    elif ssh $$h test -e /dev/disk/by-uuid/$(UUID2); then \
+    if ssh $$h test -e /dev/disk/by-uuid/$(UUID2); then \
       echo $(REMOTE_REPO2); exit 0; \
+    elif ssh $$h test -e /dev/disk/by-uuid/$(UUID1); then \
+      echo $(REMOTE_REPO1); exit 0; \
     fi; \
   done; \
   echo NONE; \
