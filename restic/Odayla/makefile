@@ -93,7 +93,7 @@ snapshots: ## get list of backups
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose snapshots
 
 show: ## get list of backups by host
-	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --host ${host} -c
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} snapshots --host ${HOST} -c
 
 stats: ## statss
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO}  --verbose stats
