@@ -92,6 +92,9 @@ prune-dryrun: ## prune data
 snapshots: ## get list of backups
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose snapshots
 
+show: ## get list of backups by host
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --host ${host} -c
+
 stats: ## statss
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO}  --verbose stats
 
