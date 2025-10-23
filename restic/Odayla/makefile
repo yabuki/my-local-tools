@@ -62,12 +62,14 @@ repair-pack: ## repair pack
 forget: ## get list of backups
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose forget \
 		--prune \
-		--keep-daily 20
+		--keep-last 5 \
+		--keep-daily 5
 
 forget-dryrun: ## get list of backups
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose forget \
 		--prune \
-		--keep-daily 20 \
+		--keep-last 5 \
+		--keep-daily 5 \
 		--dry-run
 
 # snapshotsとかindexとかのリストが取れるが、何に使うのかいまいちわからないので
