@@ -2,3 +2,4 @@
 /var/cache/pbuilder/base.cow/
 /var/backups/*.0
 /var/backups/incus/
+/var/lib/gitolite3/
