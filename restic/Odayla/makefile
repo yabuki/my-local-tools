@@ -93,7 +93,11 @@ snapshots: ## get list of backups
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose snapshots
 
 show: ## get list of backups by host
-	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} snapshots --host ${HOST} -c
+	@if [ "${host}" == "hyperion" ]; then \
+		sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} snapshots --host Odayla -c --tag hyperion; \
+	else \
+		sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} snapshots --host ${host} -c; \
+	fi
 
 stats: ## statss
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO}  --verbose stats
