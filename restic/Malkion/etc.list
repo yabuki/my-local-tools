@@ -1,0 +1,7 @@
+/etc/auto.misc
+/etc/auto.master
+/etc/auto.master.d/
+/etc/default/autofs
+/etc/sudoers.d/
+/etc/fstab
+/etc/samba/smb.conf
