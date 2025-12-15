@@ -99,7 +99,7 @@ show: ## get list of backups by host. Need to add `host=Odayla`
 		sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} snapshots --host ${host} -c; \
 	fi
 
-stats: ## statss
+stats: ## stats
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO}  --verbose stats
 
 help: ## Print this help
