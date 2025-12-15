@@ -7,8 +7,11 @@ UUID1 := c4cf0644-9e83-470c-a96e-1c70af6fb45e
 UUID2 := d93aa829-1f61-41fd-9b12-89f91790575b
 REMOTE_REPO1 := sftp:root@Odayla.local:/misc/removable/restic
 REMOTE_REPO2 := sftp:root@Odayla.local:/misc/removable2/restic
+#REMOTE_REPO1 := sftp:root@Odayla-2.local:/misc/removable/restic
+#REMOTE_REPO2 := sftp:root@Odayla-2.local:/misc/removable2/restic
 #HOSTS := host1 host2 host3
 HOSTS := root@Odayla.local
+#HOSTS := root@Odayla-2.local
 
 # UUIDとREPOの対応を検索してREMOTE_REPOに代入
 REMOTE_REPO := $(shell \
