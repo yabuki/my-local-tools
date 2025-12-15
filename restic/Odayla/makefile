@@ -92,7 +92,7 @@ prune-dryrun: ## prune data
 snapshots: ## get list of backups
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose snapshots
 
-show: ## get list of backups by host
+show: ## get list of backups by host. Need to add `host=Odayla`
 	@if [ "${host}" = "hyperion" ]; then \
 		sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} snapshots --host Odayla -c --tag hyperion; \
 	else \
