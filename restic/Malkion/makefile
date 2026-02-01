@@ -5,30 +5,23 @@ SHELL := /bin/bash
 REPO := /misc/removable/restic
 UUID1 := c4cf0644-9e83-470c-a96e-1c70af6fb45e
 UUID2 := d93aa829-1f61-41fd-9b12-89f91790575b
+HOSTS := root@Malkion.local
 #REMOTE_REPO1 := sftp:root@Odayla.local:/misc/removable/restic
 #REMOTE_REPO2 := sftp:root@Odayla.local:/misc/removable2/restic
-REMOTE_REPO1 := sftp:root@Malkion.local:/misc/removable/restic
-REMOTE_REPO2 := sftp:root@Malkion.local:/misc/removable2/restic
 #HOSTS := host1 host2 host3
-#HOSTS := root@Odayla.local
-HOSTS := root@Malkion.local
 
-# UUIDとREPOの対応を検索してREMOTE_REPOに代入
-REMOTE_REPO := $(shell \
-  for h in $(HOSTS); do \
-		echo "Checking $$h..." >&2; \
-    if ssh $$h test -e /dev/disk/by-uuid/$(UUID2); then \
-      echo $(REMOTE_REPO2); exit 0; \
-    elif ssh $$h test -e /dev/disk/by-uuid/$(UUID1); then \
-      echo $(REMOTE_REPO1); exit 0; \
-    fi; \
-  done; \
-  echo NONE; \
-)
+UUID1_EXISTS := $(shell ls /dev/disk/by-uuid/ | grep -q $(UUID1) && echo yes || echo no)
+UUID2_EXISTS := $(shell ls /dev/disk/by-uuid/ | grep -q $(UUID2) && echo yes || echo no)
 
-ifeq ($(REPO),NONE)
-  $(error Neither UUID1 ($(UUID1)) nor UUID2 ($(UUID2)) found on any of $(HOSTS))
+ifeq ($(UUID1_EXISTS),yes)
+	REPO := /misc/removable/restic
+else ifeq ($(UUID2_EXISTS),yes)
+	REPO := /misc/removable2/restic
+else
+  $(error Disk not found)
 endif
+
+HOSTS := root@Odayla.local
 
 # all targets are phony
 .PHONY: $(shell egrep -o ^[a-zA-Z_-]+: $(MAKEFILE_LIST) | sed 's/://')
@@ -56,7 +49,7 @@ auto: ## backup command
 	'
 
 backup: ## backup command
-	sudo /usr/bin/restic --password-file passwd.txt -r ${REMOTE_REPO} --verbose backup \
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup \
 		--exclude-caches \
 	 	--exclude-file Malkion-exclude.list \
 		--files-from dict.list \
@@ -76,7 +69,7 @@ backup-native: ## backup command
 		/root/
 
 backup-dryrun: ## Dry run for backup
-	sudo /usr/bin/restic --password-file passwd.txt -r ${REMOTE_REPO} --verbose backup \
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose backup \
 		--dry-run \
 		--exclude-caches \
 		--exclude-file Orlanth-exclude.list \
@@ -90,17 +83,17 @@ compare: ## compare now
 
 ## リポジトリのチェック ##
 check: ## check backup
-	sudo /usr/bin/restic --password-file passwd.txt -r ${REMOTE_REPO} --verbose check --read-data
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose check --read-data
 
 
 ## outdateなパックアップを消去 ##
 forget: ## remove snapshots
-	sudo /usr/bin/restic --password-file passwd.txt -r ${REMOTE_REPO} --verbose forget \
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose forget \
 		--prune
 		--keep-last 7
 
 forget-dryrun: ## dry run for remove snapshots
-	sudo /usr/bin/restic --password-file passwd.txt -r ${REMOTE_REPO} --verbose forget \
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose forget \
 		--prune \
 		--keep-last 7 \
 		--dry-run
@@ -109,29 +102,34 @@ forget-dryrun: ## dry run for remove snapshots
 #	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose list
 
 ls: ## get list of backups
-	sudo /usr/bin/restic --password-file passwd.txt -r ${REMOTE_REPO} --verbose ls latest
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose ls latest
 
 ## 取り出す ##
 mount: ## mount filesystem /mnt
-	sudo /usr/bin/restic --password-file passwd.txt -r ${REMOTE_REPO} --verbose mount /mnt
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose mount /mnt
 
 ## リポジトリのメンテナンス ##
 prune: ## prune data
-	sudo /usr/bin/restic --password-file passwd.txt -r ${REMOTE_REPO} --verbose prune
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose prune
 
 prune-dryrun: ## prune data
-	sudo /usr/bin/restic --password-file passwd.txt -r ${REMOTE_REPO} --verbose prune --dry-run
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose prune --dry-run
 
 ## スナップショット一覧 ##
-snapshots: ## get list of backups(for Orlanth)
-	sudo /usr/bin/restic --password-file passwd.txt -r ${REMOTE_REPO} --verbose snapshots --host Orlanth
-
 snapshots-all: ## get list of backups (全部)
-	sudo /usr/bin/restic --password-file passwd.txt -r ${REMOTE_REPO} --verbose snapshots
+	sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} --verbose snapshots
+
+show: ## get list of backups by host. Need to add `host=Odayla`
+	@if [ "${host}" = "hyperion" ]; then \
+		sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} snapshots --host Odayla -c --tag hyperion; \
+	else \
+		sudo /usr/bin/restic --password-file passwd.txt -r ${REPO} snapshots --host ${host} -c; \
+	fi
+
 
 ## 統計情報 ##
 stats: ## stats
-	sudo /usr/bin/restic --password-file passwd.txt  -r ${REMOTE_REPO} --verbose stats
+	sudo /usr/bin/restic --password-file passwd.txt  -r ${REPO} --verbose stats
 
 #	help: ## Print this help
 #		@echo 'Usage: make  [target]'
