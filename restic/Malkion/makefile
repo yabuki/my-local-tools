@@ -2,7 +2,7 @@ MAKEFLAGS += --warn-undefined-variables
 SHELL := /bin/bash
 .SHELLFLAGS := -eu -o pipefail -c
 .DEFAULT_GOAL := help
-REPO := /misc/removable/restic
+REPO := /misc/removable2/restic
 UUID1 := c4cf0644-9e83-470c-a96e-1c70af6fb45e
 UUID2 := d93aa829-1f61-41fd-9b12-89f91790575b
 #REMOTE_REPO1 := sftp:root@Odayla.local:/misc/removable/restic
@@ -13,22 +13,34 @@ REMOTE_REPO2 := sftp:root@Malkion.local:/misc/removable2/restic
 #HOSTS := root@Odayla.local
 HOSTS := root@Malkion.local
 
-# UUIDとREPOの対応を検索してREMOTE_REPOに代入
-REMOTE_REPO := $(shell \
-  for h in $(HOSTS); do \
-		echo "Checking $$h..." >&2; \
-    if ssh $$h test -e /dev/disk/by-uuid/$(UUID2); then \
-      echo $(REMOTE_REPO2); exit 0; \
-    elif ssh $$h test -e /dev/disk/by-uuid/$(UUID1); then \
-      echo $(REMOTE_REPO1); exit 0; \
-    fi; \
-  done; \
-  echo NONE; \
-)
+#	# UUIDとREPOの対応を検索してREMOTE_REPOに代入
+#	REMOTE_REPO := $(shell \
+#		for h in $(HOSTS); do \
+#			echo "Checking $$h..." >&2; \
+#			if ssh $$h test -e /dev/disk/by-uuid/$(UUID2); then \
+#				echo $(REMOTE_REPO2); exit 0; \
+#			elif ssh $$h test -e /dev/disk/by-uuid/$(UUID1); then \
+#				echo $(REMOTE_REPO1); exit 0; \
+#			fi; \
+#		done; \
+#		echo NONE; \
+#	)
+#
+#	ifeq ($(REPO),NONE)
+#		$(error Neither UUID1 ($(UUID1)) nor UUID2 ($(UUID2)) found on any of $(HOSTS))
+#	endif
 
-ifeq ($(REPO),NONE)
-  $(error Neither UUID1 ($(UUID1)) nor UUID2 ($(UUID2)) found on any of $(HOSTS))
+UUID1_EXISTS := $(shell ls /dev/disk/by-uuid/ | grep -q $(UUID1) && echo yes || echo no)
+UUID2_EXISTS := $(shell ls /dev/disk/by-uuid/ | grep -q $(UUID2) && echo yes || echo no)
+
+ifeq ($(UUID1_EXISTS),yes)
+	REMOTE_REPO := /misc/removable/restic
+else ifeq ($(UUID2_EXISTS),yes)
+	REMOTE_REPO := /misc/removable2/restic
+else
+  $(error Disk not found)
 endif
+
 
 # all targets are phony
 .PHONY: $(shell egrep -o ^[a-zA-Z_-]+: $(MAKEFILE_LIST) | sed 's/://')
@@ -73,7 +85,7 @@ backup-native: ## backup command
 		--files-from etc.list \
 		--files-from var.list \
 	 	/home/ \
-		/root/
+		/root/;
 
 backup-dryrun: ## Dry run for backup
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REMOTE_REPO} --verbose backup \
@@ -96,13 +108,15 @@ check: ## check backup
 ## outdateなパックアップを消去 ##
 forget: ## remove snapshots
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REMOTE_REPO} --verbose forget \
-		--prune
-		--keep-last 7
+		--prune \
+		--keep-last 5 \
+		--keep-daily 5
 
 forget-dryrun: ## dry run for remove snapshots
 	sudo /usr/bin/restic --password-file passwd.txt -r ${REMOTE_REPO} --verbose forget \
 		--prune \
-		--keep-last 7 \
+		--keep-last 5 \
+		--keep-daily 5 \
 		--dry-run
 
 #list: ## get list of backups
